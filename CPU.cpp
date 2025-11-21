@@ -61,26 +61,26 @@ void CPU::executeOpcode() {
         }
         break;
 
-         // 1NNN - Jumps to address NNN
-    case 0x1000: 
+        // 1NNN - Jumps to address NNN
+    case 0x1000:
         pc = opcode & 0x0FFF;
         break;
 
-         // 2NNN - Calls subroutine at NNN
-    case 0x2000: 
+        // 2NNN - Calls subroutine at NNN
+    case 0x2000:
         stack[sp] = pc;
         ++sp;
         pc = opcode & 0x0FFF;
         break;
 
         // 3XNN - Skips the next instruction if VX equals NN
-    case 0x3000: { 
+    case 0x3000: {
         uint8_t x = (opcode & 0x0F00) >> 8;
         uint8_t nn = opcode & 0x00FF;
         pc += (V[x] == nn) ? 4 : 2;
         break;
     }
-         // 4XNN - Skips the next instruction if VX does not equal NN.
+               // 4XNN - Skips the next instruction if VX does not equal NN.
     case 0x4000: { // SNE Vx, byte
         uint8_t x = (opcode & 0x0F00) >> 8;
         uint8_t nn = opcode & 0x00FF;
@@ -88,21 +88,21 @@ void CPU::executeOpcode() {
         break;
     }
                // 5XY0 - Skips the next instruction if VX equals VY
-    case 0x5000: { 
+    case 0x5000: {
         uint8_t x = (opcode & 0x0F00) >> 8;
         uint8_t y = (opcode & 0x00F0) >> 4;
         pc += (V[x] == V[y]) ? 4 : 2;
         break;
     }
                // 6XNN - Sets VX to NN
-    case 0x6000: { 
+    case 0x6000: {
         uint8_t x = (opcode & 0x0F00) >> 8;
         V[x] = opcode & 0x00FF;
         pc += 2;
         break;
     }
                // 7XNN - Adds NN to VX
-    case 0x7000: { 
+    case 0x7000: {
         uint8_t x = (opcode & 0x0F00) >> 8;
         V[x] += opcode & 0x00FF;
         pc += 2;
@@ -117,8 +117,8 @@ void CPU::executeOpcode() {
         case 0x1: V[x] |= V[y]; break; // 8XY1 - Sets VX to (VX OR VY)
         case 0x2: V[x] &= V[y]; break; // 8XY2 - Sets VX to (VX AND VY)
         case 0x3: V[x] ^= V[y]; break; // 8XY3 - Sets VX to (VX XOR VY)
-         // 8XY4 - Adds VY to VX. VF is set to 1 when there's a carry,
-         // and to 0 when there isn't.
+            // 8XY4 - Adds VY to VX. VF is set to 1 when there's a carry,
+            // and to 0 when there isn't.
         case 0x4: {
             uint16_t sum = V[x] + V[y];
             V[0xF] = (sum > 255);
@@ -126,27 +126,27 @@ void CPU::executeOpcode() {
             break;
 
         }
-         // 8XY5 - VY is subtracted from VX. VF is set to 0 when
-         // there's a borrow, and 1 when there isn't
+                // 8XY5 - VY is subtracted from VX. VF is set to 0 when
+                // there's a borrow, and 1 when there isn't
         case 0x5:
             V[0xF] = V[x] > V[y];
             V[x] -= V[y];
             break;
 
-        // 0x8XY6 - Shifts VX right by one. VF is set to the value of
-        // the least significant bit of VX before the shift
+            // 0x8XY6 - Shifts VX right by one. VF is set to the value of
+            // the least significant bit of VX before the shift
         case 0x6:
             V[0xF] = V[x] & 1;
             V[x] >>= 1;
             break;
-         // 0x8XY7: Sets VX to VY minus VX. VF is set to 0 when there's
-         // a borrow, and 1 when there isn't
+            // 0x8XY7: Sets VX to VY minus VX. VF is set to 0 when there's
+            // a borrow, and 1 when there isn't
         case 0x7:
             V[0xF] = V[y] > V[x];
             V[x] = V[y] - V[x];
             break;
-         // 0x8XYE: Shifts VX left by one. VF is set to the value of
-        // the most significant bit of VX before the shift
+            // 0x8XYE: Shifts VX left by one. VF is set to the value of
+           // the most significant bit of VX before the shift
         case 0xE:
             V[0xF] = (V[x] & 0x80) >> 7;
             V[x] <<= 1;
@@ -159,19 +159,19 @@ void CPU::executeOpcode() {
         break;
     }
                // 9XY0 - Skips the next instruction if VX doesn't equal VY
-    case 0x9000: { 
+    case 0x9000: {
         uint8_t x = (opcode & 0x0F00) >> 8;
         uint8_t y = (opcode & 0x00F0) >> 4;
         pc += (V[x] != V[y]) ? 4 : 2;
         break;
     }
                // ANNN - Sets I to the address NNN
-    case 0xA000: 
+    case 0xA000:
         I = opcode & 0x0FFF;
         pc += 2;
         break;
         // BNNN - Jumps to the address NNN plus V0
-    case 0xB000: 
+    case 0xB000:
         pc = (opcode & 0x0FFF) + V[0];
         break;
         // CXNN - Sets VX to a random number, masked by NN

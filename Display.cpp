@@ -1,7 +1,7 @@
 #include "Display.h"
 #include <iostream>
 
-Display::Display() {
+Display::Display() {      // Constructs display and initializes SDL window and renderer
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << "\n";
         exit(1);
@@ -27,13 +27,13 @@ Display::Display() {
     clear();
 }
 
-Display::~Display() {
+Display::~Display() {     // Cleans up SDL window and renderer
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-void Display::clear() {
+void Display::clear() {   // Clears display pixels and updates renderer to black
     pixels.fill(0);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -41,6 +41,7 @@ void Display::clear() {
 }
 
 bool Display::drawSprite(uint8_t x, uint8_t y, const uint8_t* sprite, uint8_t height) {
+    // Draws a sprite on the display, returns true if any pixels are erased (collision)
     bool pixelErased = false;
 
     for (int row = 0; row < height; row++) {
@@ -62,7 +63,7 @@ bool Display::drawSprite(uint8_t x, uint8_t y, const uint8_t* sprite, uint8_t he
     return pixelErased;
 }
 
-void Display::render() {
+void Display::render() {       // Renders the current pixel buffer to the window
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
