@@ -6,7 +6,7 @@
 
 class CPU {
 public:
-    CPU(Memory &mem, Display &disp, Keyboard &kbd);
+    CPU(Memory& mem, Display& disp, Keyboard& kbd);
 
     void init();
     void cycle();

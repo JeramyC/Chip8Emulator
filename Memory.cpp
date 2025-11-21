@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-static const unsigned char chip8_fontset[80] = { //fontset to build characters on screen
+static const unsigned char chip8_fontset[80] = { // fontset to build characters on screen
 
     0xF0,0x90,0x90,0x90,0xF0, // 0
     0x20,0x60,0x20,0x20,0x70, // 1
@@ -23,31 +23,31 @@ static const unsigned char chip8_fontset[80] = { //fontset to build characters o
     0xF0,0x80,0xF0,0x80,0x80  // F
 };
 
-Memory::Memory() {      //Memory constructor, SIZE is 4096, function zeroes out memory and calls the loadFontset function
-    for (int i = 0; i < SIZE; i++) memory[i] = 0;  
+Memory::Memory() {      // Constructs and initializes 4096 bytes, then loads fontset
+    for (int i = 0; i < SIZE; i++) memory[i] = 0;
     loadFontset();
-    }
+}
 
-void Memory::loadFontset() {        //loads the fontset into memory
+void Memory::loadFontset() {        // Loads the fontset into the beginning of memory
     for (int i = 0; i < 80; i++) memory[i] = chip8_fontset[i];
 }
 
-bool Memory::loadROM(const std::string &path) {  //load rom function
+bool Memory::loadROM(const std::string& path) {  // Loads a ROM file into memory at 0x200
     std::ifstream rom(path, std::ios::binary | std::ios::ate);
     if (!rom) {
         std::cerr << "Failed to open ROM: " << path << "\n";
         return false;
     }
 
-    std::streamsize size = rom.tellg();  //gets the ROM size and sets the file pointer back to the start
+    std::streamsize size = rom.tellg();  // Gets ROM file size and resets pointer
     rom.seekg(0, std::ios::beg);
 
-    if (size > (SIZE - 512)) {      //if size of the ROM is too large, then fails
+    if (size > (SIZE - 512)) {      // If ROM is too large, fails
         std::cerr << "ROM too large\n";
         return false;
     }
 
-    std::vector<char> buffer(size);  //reads the rom into temporary buffer and then copies into memory at 0x200
+    std::vector<char> buffer(size);  // Reads ROM to temp buffer and copies to memory at 0x200
     if (!rom.read(buffer.data(), size)) return false;
 
     for (int i = 0; i < size; i++) {
@@ -56,4 +56,3 @@ bool Memory::loadROM(const std::string &path) {  //load rom function
 
     return true;
 }
-
