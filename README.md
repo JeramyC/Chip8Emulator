@@ -12,7 +12,7 @@ CHIP-8 is a small interpreted programming language developed in the late 1970s. 
 Features the emulator provides:
 
 - Full CPU implementation with fetch → decode → execute cycle
-- Accurate timing using modern C++ chrono clocks
+- Timing using modern C++ chrono clocks
 - Display rendering using SDL2 libraries
 - Ability to run popular CHIP-8 games like Pong, Tetris, Space Invaders, etc.
 
