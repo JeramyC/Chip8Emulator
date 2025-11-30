@@ -6,10 +6,10 @@
 
 class CPU {
 public:
-    CPU(Memory &mem, Display &disp, Keyboard &kbd);
+    CPU(Memory &mem, Display &disp, Keyboard &kbd);   // Constructs a CPU and attaches key hardware components
 
-    void init();
-    void cycle();
+    void init();                // Initializes the CPU and resets registers/state
+    void cycle();               // Runs one emulation cycle (fetch, decode, execute)
 
 private:
     Memory& memory;
@@ -26,5 +26,5 @@ private:
     uint8_t delay_timer;
     uint8_t sound_timer;
 
-    void executeOpcode();
+    void executeOpcode();       // Decodes and executes the current opcode
 };

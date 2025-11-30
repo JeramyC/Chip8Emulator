@@ -1,10 +1,10 @@
 #include "Keyboard.h"
 
-Keyboard::Keyboard() {
+Keyboard::Keyboard() {      // Constructs a Keyboard, sets all keys as unpressed
     keys.fill(0);
 }
 
-void Keyboard::pollEvents(bool& quit) {
+void Keyboard::pollEvents(bool& quit) {     // Polls for SDL events and updates key state
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
@@ -21,11 +21,11 @@ void Keyboard::pollEvents(bool& quit) {
     }
 }
 
-bool Keyboard::isPressed(int key) {
+bool Keyboard::isPressed(int key) {         // Checks if a specific key is pressed
     return keys[key] != 0;
 }
 
-int Keyboard::waitForKeyPress() {
+int Keyboard::waitForKeyPress() {           // Waits until a key is pressed and returns its value
     SDL_Event e;
     while (true) {
         if (SDL_WaitEvent(&e)) {
@@ -45,24 +45,28 @@ int Keyboard::waitForKeyPress() {
 // 4 5 6 D
 // 7 8 9 E
 // A 0 B F
-int Keyboard::mapSDLKey(SDL_Keycode sdlKey) {
+int Keyboard::mapSDLKey(SDL_Keycode sdlKey) {    // Maps SDL keyboard keycodes to CHIP-8 key values
     switch (sdlKey) {
     case SDLK_1: return 0x1;
     case SDLK_2: return 0x2;
     case SDLK_3: return 0x3;
     case SDLK_4: return 0xC;
+
     case SDLK_q: return 0x4;
     case SDLK_w: return 0x5;
     case SDLK_e: return 0x6;
     case SDLK_r: return 0xD;
+
     case SDLK_a: return 0x7;
     case SDLK_s: return 0x8;
     case SDLK_d: return 0x9;
     case SDLK_f: return 0xE;
+
     case SDLK_z: return 0xA;
     case SDLK_x: return 0x0;
     case SDLK_c: return 0xB;
     case SDLK_v: return 0xF;
+
     default: return -1;
     }
 }
